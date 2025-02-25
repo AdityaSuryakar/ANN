@@ -1,0 +1,30 @@
+#implementation of sigmoid activation function with Gradient Descent
+import numpy as np
+import matplotlib.pyplot as plt
+
+def sigmoid_function(x):
+    return 1/(1+np.exp(-x))
+
+def gradient_descent_sigmoid(x, y, lr, epochs):
+    weights = 0  # Initialize weights
+    for _ in range(epochs):
+        y_pred = sigmoid_function(x * weights)  # Predict using sigmoid function
+        error = y - y_pred  # Calculate the error
+        weights += lr * np.sum(error * x)  # Update weights
+    return weights
+
+# Data
+x = np.array([-2, 1, 0, 1, 2])
+y = np.array([0, 0, 1, 1, 1])
+lr = 0.1
+epochs = 10
+
+# Train the model
+final_weights = gradient_descent_sigmoid(x, y, lr, epochs)
+
+# Generate predictions using the sigmoid function
+y_pred = sigmoid_function(x * final_weights)
+
+
+
+print("Final weights:", final_weights)
