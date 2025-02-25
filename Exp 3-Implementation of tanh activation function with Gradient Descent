@@ -1,0 +1,37 @@
+#Implementation of tanh activation function with Gradient Descent
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define tanh function
+def tanh_function(x):
+    return (np.exp(x) - np.exp(-x)) / (np.exp(x) + np.exp(-x))
+
+
+# Gradient Descent with tanh
+def gradient_descent_tanh(x, y, lr, epochs):
+    weights = 0  # Initialize weights
+    for _ in range(epochs):
+        y_pred = tanh_function(x * weights)  # Predict using tanh function
+        error = y - y_pred  # Calculate the error
+        gradient = np.where(x * weights > 0, 1, 0)  # ReLU derivative
+        weights += lr * np.sum(error * x * gradient)  # Update weights
+    return weights
+
+# Data
+x = np.array([2, 1, 0, 1, 2])
+y = np.array([0, 0, 1, 1, 1])
+lr = 0.1
+epochs = 10
+
+# Train the model
+final_weights = gradient_descent_tanh(x, y, lr, epochs)
+
+# Generate predictions using tanh
+y_pred = tanh_function(x * final_weights)
+
+
+
+print("Final weights:", final_weights)
+
+
+
