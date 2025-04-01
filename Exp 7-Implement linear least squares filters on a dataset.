@@ -1,0 +1,57 @@
+# Install required library
+!pip install openpyxl
+
+# Import necessary libraries
+from google.colab import files
+from google.colab import drive
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Upload the file manually
+uploaded = files.upload()
+
+# Mount Google Drive
+drive.mount('/content/drive')
+
+# List files in your Google Drive
+!ls "/content/drive/My Drive"
+!ls "/content/drive/My Drive/Colab Notebooks"
+
+# Load the dataset from Google Drive
+dataset_path = '/content/drive/My Drive/Colab Notebooks/Student_dataset.xlsx'
+df = pd.read_excel(dataset_path)
+print(df.head())
+
+# Linear Least Squares Implementation
+# Define your x (input variable) and y (target variable)
+# For illustration, let's assume CGPA (x) and Placement (y)
+x = df['CGPA'].values
+y = df['Placement'].values
+
+# Ensure x and y are numpy arrays
+x = np.array(x)
+y = np.array(y)
+
+# Build the design matrix
+A = np.vstack([x, np.ones_like(x)]).T  # Design matrix
+coefficients, residuals, rank, s = np.linalg.lstsq(A, y, rcond=None)
+
+# Extract slope and intercept from coefficients
+fitted_slope, fitted_intercept = coefficients
+
+# Predicted values
+y_pred = fitted_slope * x + fitted_intercept
+
+# Visualization
+plt.scatter(x, y, label="Data (CGPA vs Placement)")
+plt.plot(x, y_pred, color="red", label="Fitted Line")
+plt.legend()
+plt.xlabel("CGPA")
+plt.ylabel("Placement")
+plt.title("Linear Least Squares Fit")
+plt.show()
+
+# Print results
+print(f"Fitted slope: {fitted_slope}")
+print(f"Fitted intercept: {fitted_intercept}")
